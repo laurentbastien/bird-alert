@@ -1,5 +1,5 @@
 from ebird.api import get_nearby_notable, get_nearby_observations
-from bird import Bird
+from bird_alert.bird_api.bird import Bird
 
 from typing import List
 from dateutil import parser
