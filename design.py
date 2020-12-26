@@ -25,8 +25,13 @@ class RunText(SampleBase):
         offscreen_canvas = self.matrix.CreateFrameCanvas()
 
         font_ttf = ImageFont.truetype("../more_fonts/retro_computer.ttf", 7)
+        font.LoadFont("../../../fonts/4x6.bdf")
+        pos = offscreen_canvas.width
 
+        scrolling = self.matrix.CreateFrameCanvas()
         while True:
+            offscreen_canvas.Clear()
+
             image = Image.new('RGB', (30, 30))
             draw = ImageDraw.Draw(image)
             draw.rectangle([0, 6, 26, -1], fill=(255, 255, 255))
@@ -38,12 +43,17 @@ class RunText(SampleBase):
             
             graphics.DrawText(offscreen_canvas, font, 35, 10, graphics.Color(255, 255, 255), "NICE BIRD")
 
-            graphics.DrawText(offscreen_canvas, font, 35, 20, graphics.Color(255, 255, 255), "SPOTTED")
+            
+            len = graphics.DrawText(offscreen_canvas, font, pos, 20, graphics.Color(255, 255, 255), "LAURENT BASTIEN CORBEIL")
 
-            graphics.DrawText(offscreen_canvas, font, 35, 20, graphics.Color(255, 255, 255), "SPOTTED")
+            pos -= 1
 
+            if (pos + len < 0):
+                pos = offscreen_canvas.width
 
+            time.sleep(0.1)
             offscreen_canvas.SetImage(bird_image.convert('RGB'), 0, 15)
+            scrolling = self.matrix.SwapOnVSync(scrolling)
             offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
 
             # Main function

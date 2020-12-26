@@ -6,6 +6,9 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions
 from rgbmatrix import graphics
 from PIL import Image, ImageDraw, ImageFont
 
+from layout.bird_image import BirdImage
+from layout.marquee import Marquee
+from constants import BirdContants
 
 class RunText(SampleBase):
     def __init__(self, *args, **kwargs):
@@ -14,27 +17,39 @@ class RunText(SampleBase):
             "-t", "--text", help="The text to scroll on the RGB LED panel", default="Hello world!")
 
     def run(self):
-        bird_file = "cardinal.png"
-        bird_image = Image.open(bird_file)
-        bird_image.thumbnail(
-            (self.matrix.width-5, self.matrix.height-5), Image.ANTIALIAS)
-        font = graphics.Font()
-        font.LoadFont("../../../fonts/4x6.bdf")
-        font.LoadFont("../more_fonts/04b_24.bdf")
-        textColor = graphics.Color(89, 158, 92)
         offscreen_canvas = self.matrix.CreateFrameCanvas()
 
-        font_ttf = ImageFont.truetype("../more_fonts/retro_computer.ttf", 7)
+        bird_image = BirdImage(BirdContants.BIRD_PIC.value)
+        marquee = Marquee(BirdContants.SMALL_FONT.value, BirdContants.MARQUEE_FONT.value)
 
+
+        font = graphics.Font()
+
+        font.LoadFont(BirdContants.SMALL_FONT.value)
+        pos = offscreen_canvas.width
+
+        scrolling = self.matrix.CreateFrameCanvas()
         while True:
-            image = Image.new('RGB', (30, 30))
-            draw = ImageDraw.Draw(image)
-            draw.rectangle([0, 6, 26, -1], fill=(255, 255, 255))
-            draw.text((0, -2), "BIRD", fill=(232, 1, 3), font=font_ttf)
-            offscreen_canvas.SetImage(image)
-            graphics.DrawText(offscreen_canvas, font, 10, 10, textColor, "alert")
-            graphics.DrawText(offscreen_canvas, font, 35, 20, graphics.Color(255, 255, 255), "lol")
-            offscreen_canvas.SetImage(bird_image.convert('RGB'), 0, 15)
+            offscreen_canvas.Clear()
+
+            marquee.set_up_marquee(offscreen_canvas)
+            
+            graphics.DrawText(offscreen_canvas, font, 35, 5, graphics.Color(255, 255, 255), "ONE")
+            
+            graphics.DrawText(offscreen_canvas, font, 35, 10, graphics.Color(255, 255, 255), "NICE BIRD")
+
+            
+            len = graphics.DrawText(offscreen_canvas, font, pos, 20, graphics.Color(255, 255, 255), "LAURENT BASTIEN CORBEIL")
+
+            bird_image.set_image(offscreen_canvas)
+
+            pos -= 1
+
+            if (pos + len < 0):
+                pos = offscreen_canvas.width
+
+            time.sleep(0.1)
+            scrolling = self.matrix.SwapOnVSync(scrolling)
             offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
 
             # Main function
