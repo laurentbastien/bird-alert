@@ -21,7 +21,7 @@ class Marquee():
         font = graphics.Font()
         font.LoadFont(self.sig_font_type)
         textColor = graphics.Color(89, 158, 92)
-        graphics.DrawText(matrix, font, 10, 10, textColor, "alert")
+        graphics.DrawText(matrix, font, 10, 11, textColor, "alert")
 
 
     def set_up_marquee(self, matrix):
