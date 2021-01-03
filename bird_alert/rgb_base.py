@@ -8,7 +8,7 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/.."))
 
 
-class SampleBase(object):
+class RGBBase(object):
     def __init__(self, *args, **kwargs):
         self.parser = argparse.ArgumentParser()
 

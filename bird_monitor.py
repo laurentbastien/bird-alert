@@ -6,10 +6,10 @@ from bird_alert.layout.alerts import Alerts
 from bird_alert.layout.bird_image import BirdImage
 from bird_alert.layout.marquee import Marquee
 from constants import BirdContants
-from samplebase import SampleBase
+from bird_alert.rgb_base import RGBBase
 
 
-class BirdMonitor(SampleBase):
+class BirdMonitor(RGBBase):
     def __init__(self, *args, **kwargs):
         super(BirdMonitor, self).__init__(*args, **kwargs)
 
