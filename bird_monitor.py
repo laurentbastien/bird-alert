@@ -1,3 +1,4 @@
+import random
 import sys
 import time
 
@@ -5,18 +6,33 @@ from bird_alert.bird_api.bird_client import BirdClient
 from bird_alert.layout.alerts import Alerts
 from bird_alert.layout.bird_image import BirdImage
 from bird_alert.layout.marquee import Marquee
-from constants import BirdContants
 from bird_alert.rgb_base import RGBBase
+from constants import BirdContants, BirdOne, BirdTwo
 
 
 class BirdMonitor(RGBBase):
     def __init__(self, *args, **kwargs):
         super(BirdMonitor, self).__init__(*args, **kwargs)
 
+    @staticmethod
+    def bird_switch():
+        birds = (BirdOne, BirdTwo)
+        current_bird = random.choice(birds)
+
+        bird_image = BirdImage(
+            current_bird.BIRD_PIC.value,
+            current_bird.WIDTH.value,
+            current_bird.HEIGHT.value,
+            current_bird.LOC_WIDTH.value,
+            current_bird.LOC_HEIGHT.value,
+        )
+
+        return bird_image
+
     def run(self):
         offscreen_canvas = self.matrix.CreateFrameCanvas()
+        bird_image = self.bird_switch()
 
-        bird_image = BirdImage(BirdContants.BIRD_PIC.value)
         marquee = Marquee(BirdContants.SIG_FONT.value, BirdContants.MARQUEE_FONT.value)
         alerts = Alerts(BirdContants.SMALL_FONT.value)
         client = BirdClient(BirdContants.API_KEY.value)
