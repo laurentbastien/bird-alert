@@ -11,7 +11,7 @@ class Alerts:
     def __parse_date(spotted_bird):
         time_of_spot = spotted_bird.date
 
-        return "{}|{}|{}".format(
+        return "{:02d}|{:02d}|{}".format(
             time_of_spot.day, time_of_spot.month, str(time_of_spot.year)[2:]
         )
 
