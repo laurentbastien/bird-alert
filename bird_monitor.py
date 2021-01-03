@@ -15,6 +15,10 @@ class BirdMonitor(RGBBase):
         super(BirdMonitor, self).__init__(*args, **kwargs)
 
     @staticmethod
+    def get_alert_length():
+        return time.time() + BirdContants.ALERT_LENGTH.value
+
+    @staticmethod
     def bird_switch():
         birds = (BirdOne, BirdTwo)
         current_bird = random.choice(birds)
@@ -32,6 +36,7 @@ class BirdMonitor(RGBBase):
     def run(self):
         offscreen_canvas = self.matrix.CreateFrameCanvas()
         bird_image = self.bird_switch()
+        t_end = self.get_alert_length()
 
         marquee = Marquee(BirdContants.SIG_FONT.value, BirdContants.MARQUEE_FONT.value)
         alerts = Alerts(BirdContants.SMALL_FONT.value)
@@ -41,7 +46,7 @@ class BirdMonitor(RGBBase):
 
         pos = offscreen_canvas.width
 
-        while True:
+        while time.time() < t_end:
             offscreen_canvas.Clear()
 
             marquee.set_up_marquee(offscreen_canvas)
