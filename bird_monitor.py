@@ -42,7 +42,7 @@ class BirdMonitor(RGBBase):
         alerts = Alerts(BirdContants.SMALL_FONT.value)
         client = BirdClient(BirdContants.API_KEY.value)
 
-        spotted_bird = client.fetch_nearby_rare()
+        spotted_bird = client.fetch_nearby_observed()
 
         pos = offscreen_canvas.width
 
